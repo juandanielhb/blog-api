@@ -14,9 +14,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
-    private static final String JWT_SECRET_KEY = "TExBVkVfTVVZX1NFQ1JFVEE=";
-
-    public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60 * (long) 8; // 8 Horas
+    private static final String JWT_SECRET_KEY = "ZBEWmeYE9yjCfnscVb8s9J5SfWKNE2";
+    public static final long JWT_TOKEN_VALIDITY = 1000 * 60 * 60 * (long) 5;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -40,7 +39,6 @@ public class JwtService {
 
     public String generateToken(User user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("fullName", String.format("%s %s", user.getName(), user.getSurname()));
         claims.put("name", user.getName());
         claims.put("surname", user.getSurname());
         claims.put("email", user.getEmail());

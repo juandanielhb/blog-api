@@ -55,7 +55,8 @@ public class CommentService {
         Comment commentToUpdate = findCommentById(commentId);
 
         if (!commentToUpdate.getPostId().equals(postId)) {
-            throw new ResourceNotFoundException("Comment not found with ID: " + commentId);
+            log.info("Could not update comment. Comment not found with ID: {}", commentId);
+            throw new ResourceNotFoundException("Could not update comment. Comment not found with ID: " + commentId);
         }
 
         if(!comment.getText().isEmpty()) commentToUpdate.setText(comment.getText());

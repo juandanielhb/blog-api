@@ -1,0 +1,161 @@
+openapi: 3.0.0
+info:
+  title: Blog API
+  version: "1.0"
+  description: "Blog Api. Need to be updated!!!!"
+paths:
+  /api/posts:
+    get:
+      summary: Retrieve a list of blog posts
+      responses:
+        '200':
+          description: A list of blog posts
+    post:
+      summary: Create a new blog post
+      description: (Authentication required)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogPost'
+      responses:
+        '201':
+          description: Blog post created successfully
+  /api/posts/{postId}:
+    get:
+      summary: Retrieve a specific blog post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A specific blog post
+    put:
+      summary: Update a specific blog post
+      description: (Authentication required)
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BlogPost'
+      responses:
+        '200':
+          description: Blog post updated successfully
+    delete:
+      summary: Delete a specific blog post
+      description: (Authentication required)
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Blog post deleted successfully
+  /api/posts/{postId}/comments:
+    get:
+      summary: Retrieve comments for a specific blog post
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comments for a specific blog post
+    post:
+      summary: Add a new comment to a blog post
+      description: (Authentication required)
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comment added successfully
+  /api/comments/{commentId}:
+    put:
+      summary: Update a specific comment
+      description: (Authentication required)
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated successfully
+    delete:
+      summary: Delete a specific comment
+      description: (Authentication required)
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comment deleted successfully
+  /api/signup:
+    post:
+      summary: Create a new user account
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User account created successfully
+  /api/login:
+    post:
+      summary: Authenticate a user and generate a JWT
+      responses:
+        '200':
+          description: JWT generated successfully
+components:
+  schemas:
+    BlogPost:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+    Comment:
+      type: object
+      properties:
+        text:
+          type: string
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string

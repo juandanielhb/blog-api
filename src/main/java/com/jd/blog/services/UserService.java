@@ -5,7 +5,6 @@ import com.jd.blog.dtos.AuthRequest;
 import com.jd.blog.dtos.TokenInfo;
 import com.jd.blog.exceptions.ResourceNotFoundException;
 import com.jd.blog.exceptions.UserAlreadyExistsException;
-import com.jd.blog.model.Post;
 import com.jd.blog.model.User;
 import com.jd.blog.repository.UserRepository;
 import com.jd.blog.utils.SecurityUtils;

@@ -2,7 +2,6 @@ package com.jd.blog.controllers;
 
 import com.jd.blog.dtos.AuthRequest;
 import com.jd.blog.dtos.TokenInfo;
-import com.jd.blog.model.Post;
 import com.jd.blog.model.User;
 import com.jd.blog.services.UserService;
 import jakarta.validation.Valid;

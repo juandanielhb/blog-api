@@ -78,8 +78,10 @@ public class PostService {
 
     Post findPostById(String id) {
         log.info("Finding post by ID: {}", id);
-        return postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with ID: " + id));
+        if(!postRepository.findById(id).isPresent()){
+            throw new ResourceNotFoundException("Post not found with ID: " + id);
+        }
+        return postRepository.findById(id).get();
     }
 
     Post addComment(String postId, Comment comment) {
