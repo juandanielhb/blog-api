@@ -31,8 +31,5 @@ public class User   {
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
-
-  @DocumentReference
-  private List<Post> posts;
 }
 

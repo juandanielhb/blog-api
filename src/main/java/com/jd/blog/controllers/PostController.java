@@ -19,18 +19,11 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping
-//    public List<Post> getPosts() {
-//        log.info("GET /api/posts - Retrieving all posts");
-//        return postService.getPosts();
-//    }
-
-    @GetMapping()
-    public Page<Post> getPosts(@RequestParam int page, @RequestParam int size) {
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<Post> getPosts() {
         log.info("GET /api/posts - Retrieving all posts");
-        Pageable pageable = PageRequest.of(page, size);
-        return postService.getPostsPage(pageable);
+        return postService.getPosts();
     }
 
     @ResponseStatus(HttpStatus.CREATED)

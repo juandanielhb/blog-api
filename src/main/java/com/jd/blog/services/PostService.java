@@ -6,13 +6,12 @@ import com.jd.blog.model.Comment;
 import com.jd.blog.model.Post;
 import com.jd.blog.model.User;
 import com.jd.blog.repository.PostRepository;
-import com.jd.blog.utils.SecurityUtils;
 import com.mongodb.MongoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +30,8 @@ public class PostService {
 
     public List<Post> getPosts() {
         log.info("Fetching all posts.");
-        return postRepository.findAll();
+        Sort sort = Sort.by(Sort.Order.desc("createdAt"));
+        return postRepository.findAll(sort);
     }
 
     public Page<Post> getPostsPage(Pageable pageable) {
@@ -50,11 +50,9 @@ public class PostService {
 
             post.setCreatedAt(now);
             post.setUpdatedAt(now);
-            post.setAuthorId(user.getId());
+            post.setAuthor(user);
 
-            Post postSaved = postRepository.save(post);
-            userService.addPost(user, postSaved);
-            return postSaved;
+            return postRepository.save(post);
         } catch (MongoException ex) {
             log.error("Failed to create the post in MongoDB. Please check the data and try again.", ex);
             throw new ResourceCreationException("Failed to create the post in MongoDB. Please check the data and try again.", ex);

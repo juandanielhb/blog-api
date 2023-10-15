@@ -39,10 +39,10 @@ public class CommentService {
             comment.setPostId(postId);
             comment.setCreatedAt(now);
             comment.setUpdatedAt(now);
-            comment.setAuthorId(user.getId());
+            comment.setAuthor(user);
 
             Comment commentSaved = commentRepository.save(comment);
-            postService.addComment(postId, comment);
+            postService.addComment(postId, commentSaved);
             return commentRepository.save(comment);
         } catch (MongoException ex) {
             log.error("Failed to create the comment. Please check the data and try again.", ex);

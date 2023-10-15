@@ -36,10 +36,11 @@ public class UserService {
         log.info("Fetching all users.");
         return userRepository.findAll();
     }
-    public User create(User user) {
+    public TokenInfo create(User user) {
         try {
             log.info("Creating a new user: {} {}", user.getName(), user.getSurname());
-            user.setPassword(SecurityUtils.encode(user.getPassword()));
+            String rawPassword = user.getPassword();
+            user.setPassword(SecurityUtils.encode(rawPassword));
             user.setUsername(user.getEmail());
 
             if (userRepository.findOneByEmail(user.getEmail()).isPresent()) {
@@ -49,7 +50,12 @@ public class UserService {
 
             user.setCreatedAt(LocalDateTime.now());
             user.setUpdatedAt(LocalDateTime.now());
-            return userRepository.save(user);
+            User savedUser = userRepository.save(user);
+
+            authenticateUser(savedUser.getUsername(), rawPassword);
+            final String jwt = jwtService.generateToken(user);
+
+            return new TokenInfo(jwt);
         } catch (MongoException ex) {
             log.error("Failed to create the user. Please check the data and try again.", ex);
             throw new ResourceCreationException("Failed to create the user. Please check the data and try again.", ex);
@@ -59,9 +65,7 @@ public class UserService {
     public TokenInfo login(AuthRequest authRequest) {
         log.info("Authenticating the user {}", authRequest.getEmail());
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getEmail(),
-                        authRequest.getPassword()));
+        authenticateUser(authRequest.getEmail(), authRequest.getPassword());
 
         User user = findUserByUsername(authRequest.getEmail());
 
@@ -78,14 +82,13 @@ public class UserService {
                 ));
     }
 
-    User addPost(User user, Post post) {
-        log.info("Add post to the post of the user: {}", user.getUsername());
-        user.getPosts().add(post);
-        return userRepository.save(user);
-    }
-
-    User loggedUserInfo(){
+     User loggedUserInfo(){
         String username = SecurityUtils.getCurrentUsername();
         return findUserByUsername(username);
+    }
+
+    void authenticateUser(String username, String password) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
     }
 }

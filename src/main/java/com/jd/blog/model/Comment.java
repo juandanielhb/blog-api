@@ -15,7 +15,8 @@ public class Comment {
 
   private String text;
 
-  private String authorId;
+  @DocumentReference(lazy=true)
+  private User author;
 
   private String postId;
 

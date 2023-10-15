@@ -18,13 +18,14 @@ public class Post {
 
   private String content;
 
-  private String authorId;
+  @DocumentReference(lazy=true)
+  private User author;
 
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
 
-  @DocumentReference
+  @DocumentReference()
   private List<Comment> comments;
 }
 

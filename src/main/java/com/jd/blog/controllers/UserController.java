@@ -30,7 +30,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/signup")
-    public User signup(@RequestBody @Valid User user) {
+    public TokenInfo signup(@RequestBody @Valid User user) {
         log.info("POST /api/users/signup - Creating a new user");
         return userService.create(user);
     }
